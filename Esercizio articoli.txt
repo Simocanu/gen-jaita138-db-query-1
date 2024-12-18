@@ -1,0 +1,149 @@
+1)----Recupera tutti gli utenti registrati nel sistema.
+
+select *
+from utenti u ;
+
+2)----Recupera il nome, cognome e email di tutti gli utenti iscritti dopo il 1° marzo 2024.
+
+select nome, cognome, email 
+from utenti u 
+where data_iscrizione > 01-03-2024;
+
+3)----Recupera tutti gli articoli insieme al nome e cognome dell'autore.
+
+select a.titolo, u.nome, u.cognome
+from Articoli a
+join Utenti u 
+on a.id_utente = u.id_utente;
+
+4)----Recupera i titoli degli articoli pubblicati nel mese di maggio 2024.
+
+select titolo 
+from articoli a 
+where data_pubblicazione BETWEEN '2024-05-01' AND '2024-05-31';
+
+5)----Recupera le prime 5 categorie ordinate alfabeticamente per nome.
+
+select*
+from categorie c 
+order by nome_categoria
+limit 5;
+
+6)----Recupera gli articoli che appartengono alla categoria 'Tecnologia'.
+
+select *
+from articoli a 
+join categorie c 
+on a.id_articolo = c.id_categoria
+where c.nome_categoria = "tecnologia";
+
+7)----Recupera le email degli utenti che hanno scritto almeno un articolo.
+
+select u.email
+from Utenti u
+join Articoli a 
+ON u.id_utente = a.id_utente;
+
+8)----Recupera tutti gli articoli pubblicati tra il 1° giugno 2024 e il 31 agosto 2024.
+
+SELECT *
+FROM articoli a 
+WHERE data_pubblicazione BETWEEN '2024-06-01' AND '2024-08-31';
+
+9)----Recupera i dettagli delle categorie associate all'articolo con id_articolo = 10.
+
+select *
+from categorie c 
+join articoli a 
+on a.id_articolo = c.id_categoria 
+where a.id_articolo = 10;
+
+10)----Recupera i nomi degli utenti ordinati per data di iscrizione più recente.
+
+SELECT *
+FROM Utenti
+ORDER BY data_iscrizione DESC;
+
+11) Conta il numero di articoli scritti da ogni utente.
+
+select u.nome, u.cognome, COUNT(a.id_articolo) AS numero_articoli
+from Utenti u
+left join Articoli a 
+ON u.id_utente = a.id_utente
+group by u.id_utente;
+
+12) Trova la categoria con il maggior numero di articoli associati.
+
+select c.nome_categoria, COUNT(ac.id_articolo) AS numero_articoli
+from Categorie c
+join Articoli_Categorie ac 
+ON c.id_categoria = ac.id_categoria
+group by c.id_categoria
+ORDER BY numero_articoli DESC
+LIMIT 1;
+
+13) Recupera gli utenti che hanno scritto più di 2 articoli.
+
+select u.nome, u.cognome, COUNT(a.id_articolo) AS numero_articoli
+from utenti u
+join articoli a 
+on u.id_utente = a.id_utente
+group by u.id_utente
+having count (a.id_articolo) > 2;
+
+
+14) Calcola la data di pubblicazione più recente per ogni categoria.
+
+SELECT c.nome_categoria, MAX(a.data_pubblicazione) AS data_pubblicazione_piu_recente
+FROM categorie c
+JOIN articoli_categorie ac ON c.id_categoria = ac.id_categoria
+JOIN articoli a ON ac.id_articolo = a.id_articolo
+GROUP BY c.id_categoria;
+
+
+15) Trova il numero medio di articoli per utente.
+
+
+16) Recupera le categorie che hanno almeno 3 articoli associati.
+
+select c.nome_categoria, COUNT(a.id_articolo) AS numero_articoli
+from categorie c 
+join articoli a 
+on c.id_categoria = a.id_utente
+group by c.id_categoria 
+having count(a.id_articolo) > 2;
+
+17) Calcola il totale degli articoli pubblicati per ogni mese del 2024.
+
+SELECT 
+    year(data_pubblicazione) as anno,
+    month(data_pubblicazione) as mese,
+    count(id_articolo) as totale_articoli
+from articoli
+where year(data_pubblicazione) = 2024
+GROUP BY year(data_pubblicazione), month(data_pubblicazione)
+ORDER BY mese;
+
+18) Trova l'utente che ha la data di iscrizione più antica.
+
+select nome, cognome, data_iscrizione
+from utenti
+order by data_iscrizione ASC
+limit 1;
+
+19) Recupera le categorie e il numero di articoli associati a ciascuna, ordinati dal più al meno.
+
+select c.nome_categoria, count(ac.id_articolo) as numero_articoli
+from categorie c
+left join articoli_categorie ac on c.id_categoria = ac.id_categoria
+group by c.id_categoria
+order by numero_articoli desc;
+
+
+20) Calcola il numero totale di articoli pubblicati da utenti iscritti nel 2024.
+
+select count(a.id_articolo) as totale_articoli
+FROM articoli a
+join utenti u on a.id_utente = u.id_utente
+where year(u.data_iscrizione) = 2024;
+
