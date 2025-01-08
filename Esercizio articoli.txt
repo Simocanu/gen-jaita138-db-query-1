@@ -147,3 +147,35 @@ FROM articoli a
 join utenti u on a.id_utente = u.id_utente
 where year(u.data_iscrizione) = 2024;
 
+BONUS
+
+21) Recupera gli utenti che non hanno scritto nessun articolo
+
+select *
+from utenti u
+left join Articoli a 
+on u.id_utente = a.id_utente
+where a.id_articolo is null;
+
+22) Trova le categorie che non hanno alcun articolo associato
+
+select *
+from categorie c 
+left join articoli a on 
+c.id_categoria = a.id_utente
+where a.id_articolo is null;
+
+23) Trova le categorie che contengono articoli scritti dagli utenti iscritti prima del 2024
+
+select C.*
+from Categorie c
+join Articoli_Categorie ac 
+on c.id_categoria = ac.id_categoria
+join Articoli a 
+on ac.id_articolo = a.id_articolo
+join Utenti u 
+on A.id_utente = U.id_utente
+where u.data_iscrizione < '2024-01-01';
+
+24) Trova le categorie che sono associate ad almeno 3 articoli scritti nel 2024
+
